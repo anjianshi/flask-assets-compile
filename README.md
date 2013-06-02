@@ -1,34 +1,41 @@
-用于 flask 的资源自动编译插件
+flask 资源自动编译插件  
+根据给出的定义，把源文件编译至指定文件夹；并自动清理没用了的编译结果
 
-Example:  
+
+使用范例：
 
     :::python
-    import assets_compile
+    import assets_compiler
 
     if app.config['DEBUG']:
         @app.before_request
         def asset_before_request():
-            assets_compile.compile(app)
+            assets_compiler.execute(app)
     elif __name__ == '__main__':
-        assets_compile.compile(app)
+        assets_compiler.execute(app)
 
-assets_compile 默认会把 static/coffee 和 static/less 中的文件编译到 static/compiled 文件夹  
-可以给 compile() 函数传入第二个参数 asset_define 来更改其行为
+此时因为没有传入任何"定义"，系统会使用默认的"定义"：把 static/coffee 和 static/less 下的文件编译至 static/compiled 里
+(需要 nodejs, coffee-script, less)
 
-asset_define 的格式如下：
+
+"定义"的格式：
 
     :::python
-    [
-        (source_dir, compiled_dir, compiled_ext, compile_cmd)
+    definition = [
+        (source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
     ]
+    # source_dir 和 compiled_dir 是可选的
 
-例如默认的 asset_define：
+    asset_compiler.execute(app, definition)
+
+
+你也可以手动调用 asset_compiler.Compiler(...) 完成同样的任务，只不过这样一次只能编译一种资源
 
     :::python
-    assets_compile.compile(app, [
-        ('coffee', 'compiled', 'js', 'coffee --bare --output {compiled_dir} --compile {source}'),
-        ('less', 'compiled', 'css', 'lessc --yui-compress {source} {compiled}')
-    ])
+    asset_compiler.Compiler(app, source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
+    # 同样，最后两个参数可选
 
-目前不支持递归进入子目录进行编译，未来预计会支持  
-另外，未来还准备支持用 python 函数做 compile_cmd
+
+asset_compiler 会递归进入 source_dir 的子文件夹寻找可以编译的文件  
+源文件删除后，对应的已编译文件、文件夹也会被删除  
+未来准备支持用函数代替 compile_cmd
