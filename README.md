@@ -1,9 +1,9 @@
-#### flask 资源自动编译插件  
+### flask 资源自动编译插件  
 根据给出的定义，把源文件编译至指定文件夹；并自动清理没用了的编译结果
 
 ---
 
-使用范例：
+#### 使用范例
 
     :::python
     import assets_compiler
@@ -20,7 +20,7 @@
 
 ---
 
-"定义"的格式：
+#### "定义"的格式
 
     :::python
     definition = [
@@ -32,7 +32,7 @@
 
 ---
 
-你也可以手动调用 asset_compiler.Compiler(...) 完成同样的任务，只不过这样一次只能编译一种资源
+你也可以手动调用 `asset_compiler.Compiler(...)` 完成同样的任务，只不过这样一次只能编译一种资源
 
     :::python
     asset_compiler.Compiler(app, source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
@@ -40,6 +40,6 @@
 
 ---
 
-asset_compiler 会递归进入 source_dir 的子文件夹寻找可以编译的文件  
+asset_compiler 会递归进入 source_dir 的子文件夹寻找可编译的文件  
 源文件删除后，对应的已编译文件、文件夹也会被删除  
 未来准备支持用函数代替 compile_cmd
