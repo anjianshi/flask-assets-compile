@@ -30,6 +30,11 @@
 
     asset_compiler.execute(app, definition)
 
+compile_cmd 的格式请参考源代码里的 _default_definition  
+这里是一个例子：
+    :::python
+    'coffee --bare --output {compiled_dir} --compile {source}'
+
 ---
 
 你也可以手动调用 `asset_compiler.Compiler(...)` 完成同样的任务，只不过这样一次只能编译一种资源
