@@ -1,40 +1,5 @@
 # -*- coding: utf-8  -*-
 
-"""
-不做任何关于文件夹的处理。
-包括：
-    不递归进入文件夹进行编译
-    对于 compiled_dir ，只清理其中的文件，不清理其中的文件夹
-
-todo: 支持用函数代替 compile_cmd
-"""
-
-"""
-source_dir 必须是 static 文件夹的子文件夹                 
-source_dir 及其子文件夹内只能存放要被编译的文件
-多种资源的编译结果只能被保存到同一个文件夹内(即 compiled_dir)
-compiled_dir 中的多余文件会被删除，因此不要手动往里面添加文件
-
-
-
-"""
-
-
-
-"""
-Example：
-
-import assets_compiler
-
-if app.config['DEBUG']:
-    @app.before_request
-    def asset_before_request():
-        assets_compiler.execute(app)
-elif __name__ == '__main__':
-    assets_compiler.execute(app)
-"""
-
-
 import os
 import subprocess
 
