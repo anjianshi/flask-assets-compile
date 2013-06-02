@@ -12,8 +12,8 @@ Example:
     elif __name__ == '__main__':
         assets_compile.compile(app)
 
-assets_compile 默认会把 static/coffee 和 static/less 下的文件编译到 static/compiled 文件夹里。（需要你的机器安装有 nodejs, coffee-script 和 less)  
-可以通过给 compile() 函数传入第二个参数 asset_define 更改其行为
+assets_compile 默认会把 static/coffee 和 static/less 中的文件编译到 static/compiled 文件夹  
+可以给 compile() 函数传入第二个参数 asset_define 来更改其行为
 
 asset_define 的格式如下：
 
@@ -27,8 +27,8 @@ asset_define 的格式如下：
     :::python
     assets_compile.compile(app, [
         ('coffee', 'compiled', 'js', 'coffee --bare --output {compiled_dir} --compile {source}'),
-    ('less', 'compiled', 'css', 'lessc --yui-compress {source} {compiled}')
+        ('less', 'compiled', 'css', 'lessc --yui-compress {source} {compiled}')
     ])
 
-目前不支持递归进入子目录进行编译，未来预计会支持
+目前不支持递归进入子目录进行编译，未来预计会支持  
 另外，未来还准备支持用 python 函数做 compile_cmd
