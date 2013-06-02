@@ -15,7 +15,7 @@
     elif __name__ == '__main__':
         assets_compiler.execute(app)
 
-此时因为没有传入任何"定义"，系统会使用默认的"定义"：把 static/coffee 和 static/less 下的文件编译至 static/compiled 里
+此时因为没有传入任何"定义"，系统会使用默认的"定义"：把 `static/coffee` 和 `static/less` 下的文件编译到 `static/compiled` 里
 (需要 nodejs, coffee-script, less)
 
 ---
