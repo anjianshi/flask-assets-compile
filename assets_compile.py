@@ -5,6 +5,8 @@
 包括：
     不递归进入文件夹进行编译
     对于 compiled_dir ，只清理其中的文件，不清理其中的文件夹
+
+todo: 支持用函数做 compile_cmd
 """
 
 import os
