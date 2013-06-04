@@ -27,7 +27,8 @@ class Compiler(object):
         self.source_list = self.get_source_list()
         self.clean_compiled()
         for source in self.source_list:
-            self.compile(source)
+            if not os.path.isfile(self.path_map(source)):
+                self.compile(source)
 
     def get_source_list(self):
         sources = []
@@ -35,37 +36,50 @@ class Compiler(object):
                  lambda path: (os.path.splitext(path)[1] == self.source_ext) and sources.append(path))
         return sources
 
+    def path_map(self, source=None, compiled=None):
+        """
+            给出 source 与 compiled 中的任意一项，返回与之对应的另一项
+        """
+        if source is not None:
+            return source.replace(self.source_dir, self.compiled_dir).replace(self.source_ext, self.compiled_ext)
+        elif compiled is not None:
+            return compiled.replace(self.compiled_dir, self.source_dir).replace(self.compiled_ext, self.source_ext)
+
     def clean_compiled(self):
         """
-            删除没用的 compiled_file（例如对应的source已经不存在）
-            如果删除后 compiled_file 所在的文件夹为空，会连带把文件夹也删除(这个功能要测试一下能不能用)
+            删除没用的 compiled_file，包括：
+                1. 对应的source已经不存在
+                    (此时，如果删除后 compiled_file 所在的文件夹为空，会连带把文件夹也删除)
+                2. source 更新过, compiled 文件已过时
+                    这类文件即使不删除，也会在编译源文件时自动把它们替换掉。
+                    但那样一旦源文件编译错误，已经过时的编译结果就不会被删除，继续生效。
+                    最终可能导致程序员误判情况，在错误的方向上浪费时间
+            最后，只保留 source 不需要编译了的 compiled 
         """
-        def handler(path):
-            if os.path.splitext(path)[1] == self.compiled_ext:
-                source = path.replace(self.compiled_dir, self.source_dir).replace(self.compiled_ext, self.source_ext)
+        def handler(compiled):
+            if os.path.splitext(compiled)[1] == self.compiled_ext:
+                source = self.path_map(compiled=compiled)
                 if not os.path.isfile(source):
-                    os.remove(path)
+                    os.remove(compiled)
 
-                    the_dir = os.path.split(path)[0]
+                    the_dir = os.path.split(compiled)[0]
                     if not os.listdir(the_dir):
                         os.rmdir(the_dir)
+                elif os.stat(source).st_mtime > os.stat(compiled).st_mtime:
+                    os.remove(compiled)
         dir_walk(self.compiled_dir, handler)
 
-    def need_compile(self, source, compiled):
-        return not os.path.isfile(compiled) or get_mtime(source) > get_mtime(compiled)
-
     def compile(self, source):
-        compiled = source.replace(self.source_dir, self.compiled_dir).replace(self.source_ext, self.compiled_ext)
-        if self.need_compile(source, compiled):
-            env = {
-                'source': source,
-                'compiled': compiled,
-                'compiled_dir': os.path.split(compiled)[0]
-            }
-            cmd = self.compile_cmd.format(**env)
-            with open(os.devnull, 'w') as devnull:
-                p = subprocess.Popen(cmd, shell=True, stdout=devnull)
-                p.wait()
+        compiled = self.path_map(source)
+        env = {
+            'source': source,
+            'compiled': compiled,
+            'compiled_dir': os.path.split(compiled)[0]
+        }
+        cmd = self.compile_cmd.format(**env)
+        with open(os.devnull, 'w') as devnull:
+            p = subprocess.Popen(cmd, shell=True, stdout=devnull)
+            p.wait()
 
 
 def fix_ext(ext):
@@ -82,7 +96,3 @@ def dir_walk(path, callback):
                 callback(item)
             else:
                 dir_walk(item, callback)
-
-
-def get_mtime(path):
-    return os.stat(path).st_mtime
