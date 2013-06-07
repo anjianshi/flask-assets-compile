@@ -27,8 +27,11 @@ compile_cmd 的格式，以及资源定义的范例，请参考源代码里的 _
 
 #### Debug 模式
 
-若应用处于 debug 模式(app.config['DEBUG'] is True)，则客户端每发起一个 request ，asset_compiler 都会检查一次源文件（并在发现变动时进行编译）  
+可以给 register 函数传递 debug=True 来启用 debug 模式  
+此时，客户端每发起一个 request ，asset_compiler 都会检查一次源文件（并在发现变动时进行编译）  
 否则，它只会在应用启动时检查一次
+
+若 app 是一个 Flask 对象（即：不是一个 Blueprint），在没有给出 debug 参数时，asset_compiler 会自动检查 app.config['DEBUG'] 来确定是否启用 debug 模式
 
 ---
 

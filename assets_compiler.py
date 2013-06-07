@@ -10,12 +10,14 @@ _default_definition = [
 ]
 
 
-def register(app, asset_definition=_default_definition):
+def register(app, asset_definition=_default_definition, debug=None):
     def execute():
         for definition in asset_definition:
             _Compiler(app.root_path, *definition)
-            
-    if app.config['DEBUG']:
+    
+    if debug is None and app.__class__.__name__ == 'Flask':
+        debug = app.config['DEBUG']
+    if debug is True:
         @app.before_request
         def compile_asset_before_request():
             execute()
