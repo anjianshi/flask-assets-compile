@@ -1,5 +1,5 @@
 ### flask 资源自动编译插件  
-根据给出的定义，把源文件编译至指定文件夹；并自动清理没用了的编译结果
+根据给出的定义，把源文件编译至指定文件夹；并自动清理没用了的编译结果  
 部分灵感来自于 flask_cake 插件
 
 ---
@@ -8,44 +8,33 @@
 
     :::python
     import assets_compiler
-
-    if app.config['DEBUG']:
-        @app.before_request
-        def asset_before_request():
-            assets_compiler.execute(app)
-    elif __name__ == '__main__':
-        assets_compiler.execute(app)
-
-此时因为没有传入任何"定义"，系统会使用默认的"定义"：把 `static/coffee` 和 `static/less` 下的文件编译到 `static/compiled` 里
-(需要 nodejs, coffee-script, less)
+    assets_compiler.register(app, asset_definition)
 
 ---
 
-#### "定义"的格式
+#### "资源定义(asset_definition)"的格式
 
     :::python
-    definition = [
+    asset_definition = [
         (source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
     ]
     # source_dir 和 compiled_dir 是可选的
 
-    asset_compiler.execute(app, definition)
-
-compile_cmd 的格式请参考源代码里的 _default_definition  
-这里是一个例子：
-    :::python
-    'coffee --bare --output {compiled_dir} --compile {source}'
+一个 asset_definition 里可以定义多种资源  
+compile_cmd 的格式，以及资源定义的范例，请参考源代码里的 _default_definition
 
 ---
 
-你也可以手动调用 `asset_compiler.Compiler(...)` 完成同样的任务，只不过这样一次只能编译一种资源
+#### Debug 模式
 
-    :::python
-    asset_compiler.Compiler(app, source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
-    # 同样，最后两个参数可选
+若应用处于 debug 模式(app.config['DEBUG'] is True)，则客户端每发起一个 request ，asset_compiler 都会检查一次源文件（并在发现变动时进行编译）
+否则，它只会在应用启动时检查一次
 
 ---
 
-asset_compiler 会递归进入 source_dir 的子文件夹寻找可编译的文件  
-源文件删除后，对应的已编译文件、文件夹也会被删除  
-未来准备支持用函数代替 compile_cmd
+#### 其他
+
+1. asset_compiler 会递归进入 source_dir 的子文件夹寻找可编译的文件  
+2. 源文件删除后，对应的已编译文件、文件夹也会被删除  
+3. 未来准备支持用函数代替 compile_cmd
+

@@ -10,15 +10,21 @@ _default_definition = [
 ]
 
 
-def execute(root_path, asset_definition=_default_definition):
-    for definition in asset_definition:
-        Compiler(root_path, *definition)
+def register(app, asset_definition=_default_definition):
+    def execute():
+        for definition in asset_definition:
+            _Compiler(app.root_path, *definition)
+            
+    if app.config['DEBUG']:
+        @app.before_request
+        def compile_asset_before_request():
+            execute()
 
 
-class Compiler(object):
-    def __init__(self, root_path, source_ext, compiled_ext, compile_cmd, source_dir='static', compiled_dir='static/compiled'):
-        self.source_ext = fix_ext(source_ext)
-        self.compiled_ext = fix_ext(compiled_ext)
+class _Compiler(object):
+    def __init__(self, root_path, source_ext, compiled_ext, compile_cmd, source_dir='static', compiled_dir='static/compiled'):        
+        self.source_ext = _fix_ext(source_ext)
+        self.compiled_ext = _fix_ext(compiled_ext)
         self.compile_cmd = compile_cmd
         self.source_dir = root_path + '/' + source_dir
         self.compiled_dir = root_path + '/' + compiled_dir
@@ -31,7 +37,7 @@ class Compiler(object):
 
     def get_source_list(self):
         sources = []
-        dir_walk(self.source_dir,
+        _dir_walk(self.source_dir,
                  lambda path: (os.path.splitext(path)[1] == self.source_ext) and sources.append(path))
         return sources
 
@@ -66,7 +72,7 @@ class Compiler(object):
                         os.rmdir(the_dir)
                 elif os.stat(source).st_mtime > os.stat(compiled).st_mtime:
                     os.remove(compiled)
-        dir_walk(self.compiled_dir, handler)
+        _dir_walk(self.compiled_dir, handler)
 
     def compile(self, source):
         compiled = self.path_map(source)
@@ -81,12 +87,12 @@ class Compiler(object):
             p.wait()
 
 
-def fix_ext(ext):
+def _fix_ext(ext):
     """给没有前缀'.'的文件扩展名加上'.'"""
     return (ext.find('.') is 0) and ext or '.' + ext
 
 
-def dir_walk(path, callback):
+def _dir_walk(path, callback):
     """遍历给出的文件夹及其子文件夹，把遇到的每个文件传给 callback 处理"""
     if os.path.isdir(path):
         for item in os.listdir(path):
@@ -94,4 +100,4 @@ def dir_walk(path, callback):
             if os.path.isfile(item):
                 callback(item)
             else:
-                dir_walk(item, callback)
+                _dir_walk(item, callback)
