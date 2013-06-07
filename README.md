@@ -31,7 +31,8 @@ compile_cmd 的格式，以及资源定义的范例，请参考源代码里的 _
 此时，客户端每发起一个 request ，asset_compiler 都会检查一次源文件（并在发现变动时进行编译）  
 否则，它只会在应用启动时检查一次
 
-若 app 是一个 Flask 对象（即：不是一个 Blueprint），在没有给出 debug 参数时，asset_compiler 会自动检查 app.config['DEBUG'] 来确定是否启用 debug 模式
+对于 Flask app（即：不是一个 Blueprint），在没有给出 debug 参数时，asset_compiler 会自动检查 app.config['DEBUG'] 来确定是否启用 debug 模式  
+Blueprint 则只能手动启用 debug 模式
 
 ---
 
