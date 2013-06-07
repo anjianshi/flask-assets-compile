@@ -27,7 +27,7 @@ compile_cmd 的格式，以及资源定义的范例，请参考源代码里的 _
 
 #### Debug 模式
 
-若应用处于 debug 模式(app.config['DEBUG'] is True)，则客户端每发起一个 request ，asset_compiler 都会检查一次源文件（并在发现变动时进行编译）
+若应用处于 debug 模式(app.config['DEBUG'] is True)，则客户端每发起一个 request ，asset_compiler 都会检查一次源文件（并在发现变动时进行编译）  
 否则，它只会在应用启动时检查一次
 
 ---
