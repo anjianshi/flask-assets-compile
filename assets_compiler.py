@@ -5,8 +5,8 @@ import subprocess
 
 _default_definition = [
     # (source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
-    ('coffee', 'js', 'coffee --bare --output {compiled_dir} --compile {source}', 'static/script', 'static/compiled'),
-    ('less', 'css', 'lessc --yui-compress {source} {compiled}', 'static/style', 'static/compiled',)
+    ('coffee', 'js', 'coffee --bare --output {compiled_dir} --compile {source}', 'static/coffee', 'static/compiled'),
+    ('less', 'css', 'lessc --yui-compress {source} {compiled}', 'static/less', 'static/compiled',)
 ]
 
 
