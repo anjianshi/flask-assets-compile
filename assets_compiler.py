@@ -5,19 +5,18 @@ import subprocess
 
 _default_definition = [
     # (source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
-    ('coffee', 'js', 'coffee --bare --output {compiled_dir} --compile {source}', 'static/coffee', 'static/compiled'),
-    ('less', 'css', 'lessc --yui-compress {source} {compiled}', 'static/less', 'static/compiled',)
+    ('coffee', 'js', 'coffee --bare --output {compiled_dir} --compile {source}', 'static/script', 'static/compiled'),
+    ('less', 'css', 'lessc --yui-compress {source} {compiled}', 'static/style', 'static/compiled',)
 ]
 
 
-def execute(app, asset_definition=_default_definition):
+def execute(root_path, asset_definition=_default_definition):
     for definition in asset_definition:
-        Compiler(app, *definition)
+        Compiler(root_path, *definition)
 
 
 class Compiler(object):
-    def __init__(self, app, source_ext, compiled_ext, compile_cmd, source_dir='static', compiled_dir='static/compiled'):
-        root_path = app.root_path
+    def __init__(self, root_path, source_ext, compiled_ext, compile_cmd, source_dir='static', compiled_dir='static/compiled'):
         self.source_ext = fix_ext(source_ext)
         self.compiled_ext = fix_ext(compiled_ext)
         self.compile_cmd = compile_cmd
