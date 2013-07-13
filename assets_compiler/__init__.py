@@ -9,6 +9,8 @@ _default_definition = [
     ('less', 'css', 'lessc --yui-compress {source} {compiled}', 'static/less', 'static/compiled',)
 ]
 
+__version__ = 0.1
+
 
 def register(app, asset_definition=_default_definition, debug=None):
     def execute():
