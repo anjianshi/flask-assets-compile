@@ -20,7 +20,6 @@
 
     :::python
     # 也可以指定一个 default_definitions ，让 app 和 blueprint 共用同一个 definitions。（当然，输入和输出的目录会根据他们各自的 root_path 分别计算）
-
     manager = assets_compile.DefinitionManager(app, the_default_definitions)
     # for app
     manager.register()
@@ -37,8 +36,6 @@
     manager.register()
     # for blueprint
     manager.register(app_or_blueprint=blueprint)
-
-##### 四
 
 ---
 
