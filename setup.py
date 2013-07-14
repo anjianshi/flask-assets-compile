@@ -8,18 +8,20 @@ except ImportError:
 
 import os
 import sys
-import assets_compiler
+import assets_compile
 
 setup(
-    name='flask-assets-compiler',
-    version=assets_compiler.__version__,
-    description='Flask 资源自动编译插件',
-    license='License :: OSI Approved :: MIT License',
-    platforms='Platform Independent',
+    name='Flask-assets-compile',
+    version=flask_assets_compile.__version__,
+    url='https://bitbucket.org/anjianshi/flask-assets-compile',
+    license='MIT',
     author='anjianshi',
     author_email='anjianshi@gmail.com',
-    url='https://bitbucket.org/anjianshi/flask-assets-compiler',
-    packages=['assets_compiler'],
+    description='Flask 资源自动编译插件',
+    py_modules=['flask_assets_compile'],
+    zip_safe=False,
+    platforms='any',
+    install_requires=['Flask>=0.8'],
     keywords=['flask', 'assets', 'python', 'sdk'],
     classifiers=[
         'Intended Audience :: Developers',

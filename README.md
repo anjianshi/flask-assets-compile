@@ -7,38 +7,40 @@
 #### 使用范例
 
     :::python
-    import assets_compiler
-    assets_compiler.register(app, asset_definition)
+    from flask.ext import assets_compile
+    manager = assets_compile.DefinitionManager(app)
+    manager.register(assets_compile.example_definitions)
+
+    # 为 blueprint 定义资源
+    manager.register(some_definitions, blueprint_obj)
 
 ---
 
 #### "资源定义(asset_definition)"的格式
 
     :::python
-    asset_definition = [
+    asset_definitions = [
         (source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
     ]
-    # source_dir 和 compiled_dir 是可选的
+    # source_dir 和 compiled_dir 是可选的，他们的值都是针对 app/blueprint.root_path 的相对路径
 
-一个 asset_definition 里可以定义多种资源  
-compile_cmd 的格式，以及资源定义的范例，请参考源代码里的 _default_definition
+一个 asset_definitions 里可以定义多种资源  
+compile_cmd 的格式，以及资源定义的范例，请参考源代码 flask_assets_compile.py 里的 example_defintions
 
 ---
 
 #### Debug 模式
 
-可以给 register 函数传递 debug=True 来启用 debug 模式  
-此时，客户端每发起一个 request ，asset_compiler 都会检查一次源文件（并在发现变动时进行编译）  
+DefinitionManager 初始化时，会检查传递进来的 app 对象的 config
+如果 debug=True 则启用 debug 模式  
+此时，客户端每发起一个 request ，asset_compiler 都会检查一次源文件， 并在发现变动时进行编译
 否则，它只会在应用启动时检查一次
-
-对于 Flask app（即：不是一个 Blueprint），在没有给出 debug 参数时，asset_compiler 会自动检查 app.config['DEBUG'] 来确定是否启用 debug 模式  
-Blueprint 则只能手动启用 debug 模式
 
 ---
 
 #### 其他
 
-1. asset_compiler 会递归进入 source_dir 的子文件夹寻找可编译的文件  
+1. 此插件会递归进入 source_dir 的子文件夹寻找可编译的文件  
 2. 源文件删除后，对应的已编译文件、文件夹也会被删除  
 3. 未来准备支持用函数代替 compile_cmd
 

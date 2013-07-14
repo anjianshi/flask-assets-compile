@@ -3,25 +3,43 @@
 import os
 import subprocess
 
-_default_definition = [
+__version__ = 0.1
+
+example_definitions = [
     # (source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
     ('coffee', 'js', 'coffee --bare --output {compiled_dir} --compile {source}', 'static/coffee', 'static/compiled'),
     ('less', 'css', 'lessc --yui-compress {source} {compiled}', 'static/less', 'static/compiled',)
 ]
 
-__version__ = 0.1
 
+class DefinitionManager(object):
+    def __init__(self, app=None):
+        if app is not None:
+            self.init_app(app)
+        else:
+            self.app = None
+            self.debug = False
 
-def register(app, asset_definition=_default_definition, debug=None):
-    def execute():
-        for definition in asset_definition:
-            _Compiler(app.root_path, *definition)
-    
-    if debug is None and app.__class__.__name__ == 'Flask':
-        debug = app.config['DEBUG']
-    if debug is True:
-        @app.before_request
-        def compile_asset_before_request():
+    def init_app(self, app):
+        self.app = app
+        self.debug = app.config['DEBUG']
+
+    def register(definitions, app_or_blueprint=None):
+        if not isinstance(definitions, list):   # 这里也许有更好的判断方法，能支持 generator
+            definitions = [definitions]
+
+        if app_or_blueprint is None:
+            app_or_blueprint = self.app
+
+        def execute():
+            for definition in definitions:
+                _Compiler(app_or_blueprint.root_path, *definition)
+
+        if self.debug is True:
+            @app_or_blueprint.before_request
+            def compile_asset_before_request():
+                execute()
+        else:
             execute()
 
 
