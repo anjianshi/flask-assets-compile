@@ -13,18 +13,23 @@ example_definitions = [
 
 
 class DefinitionManager(object):
-    def __init__(self, app=None):
+    def __init__(self, app=None, default_definitions=example_definitions):
         if app is not None:
             self.init_app(app)
         else:
             self.app = None
             self.debug = False
 
+        self.default_definitions = default_definitions
+
     def init_app(self, app):
         self.app = app
         self.debug = app.config['DEBUG']
 
-    def register(definitions, app_or_blueprint=None):
+    def register(self, definitions=None, app_or_blueprint=None):
+        if definitions is None:
+            definitions = self.default_definitions
+            
         if not isinstance(definitions, list):   # 这里也许有更好的判断方法，能支持 generator
             definitions = [definitions]
 

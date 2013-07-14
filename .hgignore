@@ -1,5 +1,5 @@
 syntax: glob
 *.pyc
-flask_assets_compiler.egg-info/
+Flask_assets_compile.egg-info
 dist/
 build/

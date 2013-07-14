@@ -8,7 +8,7 @@ except ImportError:
 
 import os
 import sys
-import assets_compile
+import flask_assets_compile
 
 setup(
     name='Flask-assets-compile',

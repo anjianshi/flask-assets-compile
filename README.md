@@ -6,13 +6,39 @@
 
 #### 使用范例
 
+##### 一
+
     :::python
     from flask.ext import assets_compile
     manager = assets_compile.DefinitionManager(app)
-    manager.register(assets_compile.example_definitions)
+    manager.register(some_definitions)
 
     # 为 blueprint 定义资源
     manager.register(some_definitions, blueprint_obj)
+
+##### 二
+
+    :::python
+    # 也可以指定一个 default_definitions ，让 app 和 blueprint 共用同一个 definitions。（当然，输入和输出的目录会根据他们各自的 root_path 分别计算）
+
+    manager = assets_compile.DefinitionManager(app, the_default_definitions)
+    # for app
+    manager.register()
+    # for blueprint
+    manager.register(app_or_blueprint=blueprint)
+
+##### 三
+
+    :::python
+    # 在没指定 default_defintions 时，会把 assets_compile.example_definitions 当做 default_definitions
+    # example_definitions 包含了对 CoffeeScript 和 LESS 的编译指令，依赖 nodejs 的 coffee-script 和 less 包
+    manager = assets_compile.DefinitionManager(app)
+    # for app
+    manager.register()
+    # for blueprint
+    manager.register(app_or_blueprint=blueprint)
+
+##### 四
 
 ---
 
@@ -22,7 +48,7 @@
     asset_definitions = [
         (source_ext, compiled_ext, compile_cmd, source_dir, compiled_dir)
     ]
-    # source_dir 和 compiled_dir 是可选的，他们的值都是针对 app/blueprint.root_path 的相对路径
+    # source_dir 和 compiled_dir 是可选的，他们的值都是针对 app/blueprint.root_path（注意，不是 static_folder） 的相对路径
 
 一个 asset_definitions 里可以定义多种资源  
 compile_cmd 的格式，以及资源定义的范例，请参考源代码 flask_assets_compile.py 里的 example_defintions
