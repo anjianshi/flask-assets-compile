@@ -22,7 +22,7 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=['Flask>=0.8'],
-    keywords=['flask', 'assets', 'python', 'sdk'],
+    keywords=['flask', 'assets', 'python'],
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',

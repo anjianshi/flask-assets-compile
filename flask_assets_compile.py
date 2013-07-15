@@ -30,7 +30,7 @@ class DefinitionManager(object):
         if definitions is None:
             definitions = self.default_definitions
             
-        if not isinstance(definitions, list):   # 这里也许有更好的判断方法，能支持 generator
+        if not isinstance(definitions, list):
             definitions = [definitions]
 
         if app_or_blueprint is None:
