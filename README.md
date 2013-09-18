@@ -18,7 +18,7 @@ manager.register(some_definitions, blueprint_obj)
 
 ##### No.2
 ```python
-# you can also define a default_definitions, so app and blueprint can use the same definitions.(of course, input and output directory'path will determined by their own root_path)
+# you can define a default_definitions, then app and blueprint can use the same definitions.(of course, input and output directory'path will determined by their own root_path)
 manager = assets_compile.DefinitionManager(app, the_default_definitions)
 # for app
 manager.register()
