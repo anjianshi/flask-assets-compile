@@ -1,4 +1,3 @@
-syntax: glob
 *.pyc
 Flask_assets_compile.egg-info
 dist/
