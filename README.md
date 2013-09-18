@@ -54,10 +54,10 @@ asset_definitions = [
 
 ### Debug mode
 
-when DefinitionManager is initialized, it will check 'config' property of the app object user passed
-if debug=True, turn on Debug mode.
-then, everytime client sent a request, the extension have to check about asset sources, and compile assets that has changed
-otherwise, it only checked once when the application starts
+when DefinitionManager is initialized, it will check 'config' property of the app object user passed  
+if debug=True, turn on Debug mode.  
+then, everytime client sent a request, the extension have to check about asset sources, and compile assets that has changed  
+otherwise, it only checked once when the application starts  
 
 ---
 
