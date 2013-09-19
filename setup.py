@@ -13,11 +13,11 @@ import flask_assets_compile
 setup(
     name='Flask-assets-compile',
     version=flask_assets_compile.__version__,
-    url='https://bitbucket.org/anjianshi/flask-assets-compile',
+    url='https://github.com/anjianshi/flask-assets-compile',
     license='MIT',
     author='anjianshi',
     author_email='anjianshi@gmail.com',
-    description='Flask 资源自动编译插件',
+    description='Flask assets auto compile extension',
     py_modules=['flask_assets_compile'],
     zip_safe=False,
     platforms='any',
