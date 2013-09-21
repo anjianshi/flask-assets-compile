@@ -6,8 +6,6 @@ try:
 except ImportError:
     from distutils.core import setup
 
-import os
-import sys
 import flask_assets_compile
 
 setup(
