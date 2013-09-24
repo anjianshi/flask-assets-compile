@@ -1,3 +1,6 @@
+### document is out-of-date
+
+
 ### Flask assets auto compile extension
 According to the definitions given，compile assets to specified folder; and clean up old, useless compile result.  
 some idea was from [Flask-Cake](https://github.com/rsenk330/Flask-Cake)
