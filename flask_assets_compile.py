@@ -41,9 +41,7 @@ class DefinitionManager(object):
                 _Compiler(app_or_blueprint.root_path, *definition)
 
         if self.debug is True:
-            @app_or_blueprint.before_request
-            def compile_asset_before_request():
-                execute()
+            app_or_blueprint.before_request(execute)
         else:
             execute()
 
@@ -121,10 +119,8 @@ def _fix_ext(ext):
 
 def _dir_walk(path, callback):
     """遍历给出的文件夹及其子文件夹，把遇到的每个文件传给 callback 处理"""
-    if os.path.isdir(path):
-        for item in os.listdir(path):
-            item = path + '/' + item
-            if os.path.isfile(item):
-                callback(item)
-            else:
-                _dir_walk(item, callback)
+    for dirpath, dirs, files in os.walk(path):
+        for item in files:
+            callback(dirpath + '/' + item)
+        for item in dirs:
+            _dir_walk(dirpath + '/' + item, callback)
