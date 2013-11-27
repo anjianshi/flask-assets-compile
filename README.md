@@ -1,3 +1,6 @@
+### Deprecated
+please use Flask-Assets or Grunt instead
+
 ### document is out-of-date
 
 
